@@ -96,11 +96,10 @@ function App() {
           {albums.map( (album, i) => {
             // console.log(album);
             return (
-              <Card onClick={() => openSpotify(album.external_urls.spotify)}>
+              <Card onClick={() => openSpotify(album.external_urls.spotify)} style={{ cursor: 'pointer' }}>
                 <Card.Img src={album.images[0].url}/>
                 <Card.Body>
                   <Card.Title>{album.name}</Card.Title>
-                  {/* <Button variant="primary" onClick={() => openSpotify(album.external_urls.spotify)}>Open in Spotify</Button> */}
                 </Card.Body>
               </Card>
             )
