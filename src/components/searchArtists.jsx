@@ -32,7 +32,8 @@ function SearchArtists() {
   async function search() {
     setLoading(true);
     console.log("Searching for " + artists);
-
+    setArtistNotFound(false);
+    
     if (!accessToken) {
       console.error('Access token not available.');
       setLoading(false);
