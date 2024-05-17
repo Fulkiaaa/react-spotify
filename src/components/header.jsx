@@ -1,36 +1,27 @@
-import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Navbar, Nav, Container } from "react-bootstrap";
 
 export default class Header extends Component {
   render() {
     return (
-      <header>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <a className="navbar-brand" href="/">Logo</a>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item active">
-                <a className="nav-link" href="/">Home</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/top-tracks">Top tracks</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/top-artists">Top Artists</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/top-genre">Top Genre</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/search-artists">Search Artists</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand href="/">Logo</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ml-auto">
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/top-tracks">Top tracks</Nav.Link>
+              <Nav.Link href="/top-artists">Top Artists</Nav.Link>
+              <Nav.Link href="/top-genre">Top Genre</Nav.Link>
+              <Nav.Link href="/search-artists">
+                Search Albums Of An Artists
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     );
   }
 }
