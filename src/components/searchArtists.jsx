@@ -12,6 +12,8 @@ import {
 } from "react-bootstrap";
 import { ThreeDots } from "react-loader-spinner";
 import "../assets/SearchArtists.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 
 const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
 const CLIENT_SECRET = "f70e8a9e4bdb441e813841c796dbfb52";
@@ -153,11 +155,16 @@ function SearchArtists() {
                   <Card
                     key={album.id}
                     onClick={() => openSpotify(album.external_urls.spotify)}
-                    style={{ cursor: "pointer" }}
                   >
                     <Card.Img src={album.images[0].url} alt={album.name} />
                     <Card.Body>
-                      <Card.Title>{album.name}</Card.Title>
+                      <Card.Title style={{ fontSize: "1rem" }}>
+                        {album.name}
+                      </Card.Title>
+                      <FontAwesomeIcon
+                        icon={faSpotify}
+                        style={{ cursor: "pointer", fontSize: "1.50rem" }}
+                      />
                     </Card.Body>
                   </Card>
                 ))}
@@ -191,7 +198,7 @@ function SearchArtists() {
                       }
                     >
                       View on Spotify
-                    </Button>
+                    </Button>{" "}
                   </Card.Body>
                 </Card>
               )}

@@ -10,7 +10,7 @@ export default class Header extends Component {
           <Navbar.Brand href="/">Logo</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ml-auto">
+            <Nav className="ml-auto p-2">
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/top-tracks">Top tracks</Nav.Link>
               <Nav.Link href="/top-artists">Top Artists</Nav.Link>
