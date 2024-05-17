@@ -68,7 +68,7 @@ function App() {
       // setLoading(false);
       setTimeout(() => {
         setLoading(false);
-      }, 500);
+      }, 700);
 
     } catch (error) {
       console.error('Error:', error);
@@ -105,14 +105,19 @@ function App() {
             visible={true}
             height="50"
             width="50"
-            color="#4fa94d"
+            color="#0B5ED7"
             radius="9"
             ariaLabel="three-dots-loading"
-            wrapperStyle={{}}
+            wrapperStyle={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
             wrapperClass=""
           />
         ) : (
-          <Row className='mx-2 row row-cols-4'>
+          <Row className='mx-auto row row-cols-5 gap-5 justify-content-center'>
             {albums.map( (album, i) => {
               return (
                 <Card key={album.id} onClick={() => openSpotify(album.external_urls.spotify)} style={{ cursor: 'pointer' }}>
