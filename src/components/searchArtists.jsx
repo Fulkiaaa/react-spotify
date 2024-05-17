@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, InputGroup, FormControl, Button, Row, Card } from 'react-bootstrap';
+import { Container, InputGroup, FormControl, Button, Row, Card, Alert } from 'react-bootstrap'; // Ajout d'Alert depuis react-bootstrap
 import { ThreeDots } from 'react-loader-spinner';
-// import './SearchArtists.css';
-import Header from './header';
+import '../assets/SearchArtists.css';
 
 const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
 const CLIENT_SECRET = "f70e8a9e4bdb441e813841c796dbfb52";
@@ -13,6 +12,7 @@ function SearchArtists() {
   const [accessToken, setAccessToken] = useState("");
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [artistNotFound, setArtistNotFound] = useState(false);
 
   useEffect(() => {
     const authorization = {
@@ -53,6 +53,11 @@ function SearchArtists() {
         throw new Error('Failed to fetch artist ID: ' + response.status);
       }
       const data = await response.json();
+      if (data.artists.items.length === 0) {
+        setArtistNotFound(true);
+        setLoading(false);
+        return;
+      }
       const artistID = data.artists.items[0].id;
       console.log("Artist ID is " + artistID);
 
@@ -115,14 +120,18 @@ function SearchArtists() {
           />
         ) : (
           <Row className='mx-auto row row-cols-5 gap-5 justify-content-center'>
-            {albums.map(album => (
-              <Card key={album.id} onClick={() => openSpotify(album.external_urls.spotify)} style={{ cursor: 'pointer' }}>
-                <Card.Img src={album.images[0].url} alt={album.name} />
-                <Card.Body>
-                  <Card.Title>{album.name}</Card.Title>
-                </Card.Body>
-              </Card>
-            ))}
+            {artistNotFound ? (
+              <Alert variant="danger">Artist not found. Please try again with a different search term.</Alert>
+            ) : (
+              albums.map(album => (
+                <Card key={album.id} onClick={() => openSpotify(album.external_urls.spotify)} style={{ cursor: 'pointer' }}>
+                  <Card.Img src={album.images[0].url} alt={album.name} />
+                  <Card.Body>
+                    <Card.Title>{album.name}</Card.Title>
+                  </Card.Body>
+                </Card>
+              ))
+            )}
           </Row>
         )}
       </Container>
