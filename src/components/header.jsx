@@ -5,7 +5,7 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 export default class Header extends Component {
   render() {
     return (
-      <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar bg="light" variant="light" expand="lg">
         <Container>
           <Navbar.Brand href="/">Logo</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
