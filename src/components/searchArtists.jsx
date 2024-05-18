@@ -82,7 +82,7 @@ function SearchArtists() {
       setArtistInfo(artist);
 
       const albumsResponse = await fetch(
-        `https://api.spotify.com/v1/artists/${artist.id}/albums?include_groups=album&market=US&limit=50`,
+        `https://api.spotify.com/v1/artists/${artist.id}/albums?include_groups=album&limit=50`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -154,6 +154,7 @@ function SearchArtists() {
                 {albums.map((album) => (
                   <Card
                     key={album.id}
+                    className="border-0"
                     onClick={() => openSpotify(album.external_urls.spotify)}
                   >
                     <Card.Img src={album.images[0].url} alt={album.name} />
