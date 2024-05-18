@@ -111,7 +111,7 @@ function SearchArtists() {
 
   return (
     <Container>
-      <InputGroup className="mb-3" size="lg">
+      <InputGroup className="my-4" size="lg">
         <FormControl
           placeholder="Search For Artists..."
           type="input"
