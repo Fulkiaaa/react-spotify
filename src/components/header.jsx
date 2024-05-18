@@ -14,7 +14,7 @@ export default class Header extends Component {
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/top-tracks">Top tracks</Nav.Link>
               <Nav.Link href="/top-artists">Top Artists</Nav.Link>
-              <Nav.Link href="/top-genre">Top Genre</Nav.Link>
+              <Nav.Link href="/top-genres">Top Genres</Nav.Link>
               <Nav.Link href="/search-artists">
                 Search Albums Of An Artists
               </Nav.Link>
