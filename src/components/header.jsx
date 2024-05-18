@@ -1,11 +1,48 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Button, Col } from "react-bootstrap";
+import axios from "axios";
+
+const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
+const REDIRECT_URI = "http://localhost:3000";
+const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+const RESPONSE_TYPE = "token";
 
 export default class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: null,
+    };
+  }
+
+  componentDidMount() {
+    // Check if the URL has the access token
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("token");
+
+    if (!token && hash) {
+      token = hash
+        .substring(1)
+        .split("&")
+        .find((elem) => elem.startsWith("access_token"))
+        .split("=")[1];
+
+      window.location.hash = "";
+      window.localStorage.setItem("token", token);
+    }
+
+    this.setState({ token });
+  }
+
+  logout = () => {
+    this.setState({ token: null });
+    window.localStorage.removeItem("token");
+  };
+
   render() {
     return (
-      <Navbar bg="secondary" variant="secondary" expand="lg">
+      <Navbar bg="secondary" variant="secondary" expand="lg" sticky="top">
         <Container>
           <Navbar.Brand href="/" className="text-white">
             Logo
@@ -17,7 +54,7 @@ export default class Header extends Component {
                 Home
               </Nav.Link> */}
               <Nav.Link className="text-white" href="/top-tracks">
-                Top tracks
+                Top Tracks
               </Nav.Link>
               <Nav.Link className="text-white" href="/top-artists">
                 Top Artists
@@ -26,8 +63,22 @@ export default class Header extends Component {
                 Top Genres
               </Nav.Link>
               <Nav.Link className="text-white" href="/search-artists">
-                Search Albums Of An Artists
+                Search Albums Of An Artist
               </Nav.Link>
+            </Nav>
+            <Nav className="ms-3">
+              {this.state.token ? (
+                <Button variant="danger" onClick={this.logout}>
+                  Logout
+                </Button>
+              ) : (
+                <Button
+                  variant="success"
+                  href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+                >
+                  Login to Spotify
+                </Button>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
