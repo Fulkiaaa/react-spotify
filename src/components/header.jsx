@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, Container, Button, Col } from "react-bootstrap";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import axios from "axios";
 
 const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
 const REDIRECT_URI = "http://localhost:3000";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
+const SCOPES = "user-read-recently-played";
+const AUTH_URL = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPES}`;
 
 export default class Header extends Component {
   constructor(props) {
@@ -17,7 +19,6 @@ export default class Header extends Component {
   }
 
   componentDidMount() {
-    // Check if the URL has the access token
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
 
@@ -50,17 +51,14 @@ export default class Header extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mx-auto p-2 gap-4">
-              {/* <Nav.Link className="text-white" href="/">
-                Home
-              </Nav.Link> */}
               <Nav.Link className="text-white" href="/top-tracks">
-                Top Tracks
+                My Top Tracks
               </Nav.Link>
               <Nav.Link className="text-white" href="/top-artists">
-                Top Artists
+                My Top Artists
               </Nav.Link>
               <Nav.Link className="text-white" href="/top-genres">
-                Top Genres
+                My Top Genres
               </Nav.Link>
               <Nav.Link className="text-white" href="/search-artists">
                 Search Albums Of An Artist
@@ -72,10 +70,7 @@ export default class Header extends Component {
                   Logout
                 </Button>
               ) : (
-                <Button
-                  variant="success"
-                  href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
-                >
+                <Button variant="success" href={AUTH_URL}>
                   Login to Spotify
                 </Button>
               )}
