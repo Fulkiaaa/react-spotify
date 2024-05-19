@@ -9,6 +9,7 @@ import Home from "./components/home";
 import TopTracks from "./components/topTracks";
 import TopArtists from "./components/topArtists";
 import TopGenre from "./components/topGenres";
+import RecentlyPlayed from "./components/recentlyPlayed";
 import SearchArtists from "./components/searchArtists";
 import Error from "./components/error";
 
@@ -24,6 +25,7 @@ function App() {
             <Route path="/top-artists" element={<TopArtists />} />
             <Route path="/top-artists" element={<TopArtists />} />
             <Route path="/top-genres" element={<TopGenre />} />
+            <Route path="/recently-played" element={<RecentlyPlayed />} />
             <Route path="/search-artists" element={<SearchArtists />} />
             <Route path="/*" element={<Error />} />
           </Routes>

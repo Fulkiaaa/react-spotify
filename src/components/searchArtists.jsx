@@ -14,6 +14,7 @@ import { ThreeDots } from "react-loader-spinner";
 import "../assets/SearchArtists.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
+import axios from "axios";
 
 const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
 const CLIENT_SECRET = "f70e8a9e4bdb441e813841c796dbfb52";
@@ -30,15 +31,16 @@ function SearchArtists() {
   useEffect(() => {
     const fetchAccessToken = async () => {
       try {
-        const response = await fetch("https://accounts.spotify.com/api/token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
-        });
-        const data = await response.json();
-        setAccessToken(data.access_token);
+        const response = await axios.post(
+          "https://accounts.spotify.com/api/token",
+          `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        );
+        setAccessToken(response.data.access_token);
       } catch (error) {
         console.error("Error fetching access token:", error);
       }
@@ -59,29 +61,25 @@ function SearchArtists() {
     }
 
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `https://api.spotify.com/v1/search?q=${artists}&type=artist`,
         {
-          method: "GET",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
         }
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch artist ID: " + response.status);
-      }
-      const data = await response.json();
-      if (data.artists.items.length === 0) {
+
+      if (response.data.artists.items.length === 0) {
         setArtistNotFound(true);
         setLoading(false);
         return;
       }
-      const artist = data.artists.items[0];
+
+      const artist = response.data.artists.items[0];
       setArtistInfo(artist);
 
-      const albumsResponse = await fetch(
+      const albumsResponse = await axios.get(
         `https://api.spotify.com/v1/artists/${artist.id}/albums?include_groups=album&limit=50`,
         {
           headers: {
@@ -89,11 +87,8 @@ function SearchArtists() {
           },
         }
       );
-      if (!albumsResponse.ok) {
-        throw new Error("Failed to fetch albums: " + albumsResponse.status);
-      }
-      const albumsData = await albumsResponse.json();
-      setAlbums(albumsData.items);
+
+      setAlbums(albumsResponse.data.items);
 
       setTimeout(() => {
         setLoading(false);

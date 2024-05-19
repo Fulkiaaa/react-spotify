@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import axios from "axios";
+import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
 const REDIRECT_URI = "http://localhost:3000";
@@ -39,6 +40,7 @@ export default class Header extends Component {
   logout = () => {
     this.setState({ token: null });
     window.localStorage.removeItem("token");
+    window.location.reload();
   };
 
   render() {
@@ -60,15 +62,36 @@ export default class Header extends Component {
               <Nav.Link className="text-white" href="/top-genres">
                 My Top Genres
               </Nav.Link>
+              <Nav.Link className="text-white" href="/recently-played">
+                Recently Played
+              </Nav.Link>
               <Nav.Link className="text-white" href="/search-artists">
                 Search Albums Of An Artist
               </Nav.Link>
             </Nav>
-            <Nav className="ms-3">
+            <Nav className="navbar-right">
               {this.state.token ? (
-                <Button variant="danger" onClick={this.logout}>
-                  Logout
-                </Button>
+                <NavDropdown
+                  className="navbar-right"
+                  variant="light"
+                  title={
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      style={{ fontSize: "1.5em", color: "#ffffff" }}
+                    />
+                  }
+                  id="basic-nav-dropdown"
+                >
+                  <NavDropdown.Item href="#profile">Profile</NavDropdown.Item>
+                  <NavDropdown.Item href="#settings">Settings</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item
+                    className="ms-auto navbar-right"
+                    onClick={this.logout}
+                  >
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
               ) : (
                 <Button variant="success" href={AUTH_URL}>
                   Login to Spotify
