@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Container } from "react-bootstrap";
 
 const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
 const REDIRECT_URI = "http://localhost:3000";
@@ -62,12 +62,12 @@ export default class TopTracks extends Component {
     }
 
     return (
-      <div>
+      <Container className="my-4" style={{ maxWidth: "80%" }}>
         <h2>Recently Played Tracks</h2>
-        <Table striped bordered hover size="sm">
+        <Table className="my-4" striped bordered hover>
           <thead>
             <tr>
-              <th>Track Name</th>
+              <th colSpan={2}>Track Name</th>
               <th>Artists</th>
               <th>Album</th>
               <th>Played At</th>
@@ -76,6 +76,7 @@ export default class TopTracks extends Component {
           <tbody>
             {tracks.map((trackObj, index) => (
               <tr key={index}>
+                <td>{index + 1}</td>
                 <td>{trackObj.track.name}</td>
                 <td>
                   {trackObj.track.artists
@@ -88,7 +89,7 @@ export default class TopTracks extends Component {
             ))}
           </tbody>
         </Table>
-      </div>
+      </Container>
     );
   }
 }
