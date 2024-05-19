@@ -25,7 +25,6 @@ export default class RecentlyPlayedTracks extends Component {
 
   componentDidMount() {
     const { token } = this.state;
-
     this.setState({ loading: true });
 
     if (token) {
@@ -55,6 +54,7 @@ export default class RecentlyPlayedTracks extends Component {
 
   fetchRecentlyPlayedTracks = () => {
     const { token } = this.state;
+    this.setState({ loading: true });
 
     axios
       .get("https://api.spotify.com/v1/me/player/recently-played", {
@@ -66,7 +66,9 @@ export default class RecentlyPlayedTracks extends Component {
         },
       })
       .then((response) => {
-        this.setState({ tracks: response.data.items, loading: false });
+        setTimeout(() => {
+          this.setState({ tracks: response.data.items, loading: false });
+        }, 300);
       })
       .catch((error) => {
         console.error("Error fetching recently played tracks:", error);
@@ -74,7 +76,9 @@ export default class RecentlyPlayedTracks extends Component {
           this.setState({ isLoggedIn: false });
           window.localStorage.removeItem("token");
         }
-        this.setState({ loading: false });
+        setTimeout(() => {
+          this.setState({ loading: false });
+        }, 300);
       });
   };
 
@@ -87,9 +91,13 @@ export default class RecentlyPlayedTracks extends Component {
 
     if (!isLoggedIn) {
       return (
-        <Container className="text-center mt-5">
+        <Container className="my-4">
           <h2>Please log in to view your recently played tracks</h2>
-          <Button variant="success" href={AUTH_URL}>
+          <Button
+            className="m-3"
+            style={{ backgroundColor: "#34B954", borderColor: "#34B954" }}
+            href={AUTH_URL}
+          >
             Login to Spotify
           </Button>
         </Container>

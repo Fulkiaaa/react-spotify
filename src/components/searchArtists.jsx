@@ -105,7 +105,8 @@ function SearchArtists() {
   };
 
   return (
-    <Container>
+    <Container style={{ maxWidth: "80%" }}>
+      <h2 className="my-4">Search Albums Of An Artist</h2>
       <InputGroup className="my-4" size="lg">
         <FormControl
           placeholder="Search For Artists..."

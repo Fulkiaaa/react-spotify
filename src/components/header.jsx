@@ -45,7 +45,7 @@ export default class Header extends Component {
 
   render() {
     return (
-      <Navbar bg="secondary" variant="secondary" expand="lg" sticky="top">
+      <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
         <Container>
           <Navbar.Brand href="/" className="text-white">
             Logo
@@ -93,7 +93,10 @@ export default class Header extends Component {
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <Button variant="success" href={AUTH_URL}>
+                <Button
+                  style={{ backgroundColor: "#34B954", borderColor: "#34B954" }}
+                  href={AUTH_URL}
+                >
                   Login to Spotify
                 </Button>
               )}

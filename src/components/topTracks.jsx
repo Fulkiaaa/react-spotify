@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Button, Table, Container } from "react-bootstrap";
+import { Button, Tab, Tabs, Container, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import { ThreeDots } from "react-loader-spinner";
@@ -16,7 +16,10 @@ export default class TopTracks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      topTracks: [],
+      topTracks4Months: [],
+      topTracks6Months: [],
+      topTracks12Months: [],
+      activeTab: "topTracks4Months",
       token: window.localStorage.getItem("token"),
       isLoggedIn: !!window.localStorage.getItem("token"),
       loading: false,
@@ -25,33 +28,86 @@ export default class TopTracks extends Component {
 
   componentDidMount() {
     const { token } = this.state;
+    this.setState({ loading: true });
 
     if (token) {
-      this.fetchTopTracks();
+      this.fetchTopTracks("short_term");
+      this.fetchTopTracks("medium_term");
+      this.fetchTopTracks("long_term");
+    } else {
+      this.checkForTokenInUrl();
     }
   }
 
-  fetchTopTracks = () => {
-    const { token } = this.state;
+  checkForTokenInUrl = () => {
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("token");
 
+    if (!token && hash) {
+      const parsedHash = new URLSearchParams(hash.substring(1));
+      token = parsedHash.get("access_token");
+
+      if (token) {
+        window.localStorage.setItem("token", token);
+        this.setState({ token, isLoggedIn: true }, () => {
+          this.fetchTopTracks("short_term");
+          this.fetchTopTracks("medium_term");
+          this.fetchTopTracks("long_term");
+        });
+      }
+      window.location.hash = "";
+    }
+  };
+
+  fetchTopTracks = (timeRange) => {
+    const { token } = this.state;
     this.setState({ loading: true });
 
     axios
-      .get("https://api.spotify.com/v1/me/top/tracks?time_range=short_term", {
+      .get(`https://api.spotify.com/v1/me/top/tracks`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
         params: {
+          time_range: timeRange,
           limit: 50,
         },
       })
       .then((response) => {
-        this.setState({ topTracks: response.data.items, loading: false });
-        console.log(response);
+        setTimeout(() => {
+          switch (timeRange) {
+            case "short_term":
+              this.setState({
+                topTracks4Months: response.data.items,
+                loading: false,
+              });
+              break;
+            case "medium_term":
+              this.setState({
+                topTracks6Months: response.data.items,
+                loading: false,
+              });
+              break;
+            case "long_term":
+              this.setState({
+                topTracks12Months: response.data.items,
+                loading: false,
+              });
+              break;
+            default:
+              break;
+          }
+        }, 300);
       })
       .catch((error) => {
         console.error("Error fetching top tracks:", error);
-        this.setState({ loading: false });
+        if (error.response && error.response.status === 403) {
+          this.setState({ isLoggedIn: false });
+          window.localStorage.removeItem("token");
+        }
+        setTimeout(() => {
+          this.setState({ loading: false });
+        }, 300);
       });
   };
 
@@ -59,14 +115,61 @@ export default class TopTracks extends Component {
     window.open(url, "_blank");
   };
 
+  renderTopTracksTable = (tracks) => {
+    return (
+      <Table className="my-4" striped bordered hover>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Track Name</th>
+            <th>Artists</th>
+            <th>Album</th>
+            <th>Preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tracks.map((trackObj, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{trackObj.name}</td>
+              <td>
+                {trackObj.artists.map((artist) => artist.name).join(", ")}
+              </td>
+              <td>{trackObj.album.name}</td>
+              <td>
+                <FontAwesomeIcon
+                  icon={faSpotify}
+                  style={{ cursor: "pointer", fontSize: "1.25rem" }}
+                  onClick={() =>
+                    this.openSpotifyTrack(trackObj.external_urls.spotify)
+                  }
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+
   render() {
-    const { topTracks, isLoggedIn, loading } = this.state;
+    const {
+      topTracks4Months,
+      topTracks6Months,
+      topTracks12Months,
+      isLoggedIn,
+      loading,
+    } = this.state;
 
     if (!isLoggedIn) {
       return (
-        <Container className="text-center mt-5">
+        <Container className="my-4">
           <h2>Please log in to view your top tracks</h2>
-          <Button variant="success" href={AUTH_URL}>
+          <Button
+            className="m-3"
+            style={{ backgroundColor: "#34B954", borderColor: "#34B954" }}
+            href={AUTH_URL}
+          >
             Login to Spotify
           </Button>
         </Container>
@@ -74,8 +177,8 @@ export default class TopTracks extends Component {
     }
 
     return (
-      <Container>
-        <h2 className="my-4">Your Top Tracks</h2>
+      <Container style={{ maxWidth: "80%" }}>
+        <h2 className="my-4">Top Tracks</h2>
         {loading ? (
           <div className="text-center">
             <ThreeDots
@@ -94,39 +197,17 @@ export default class TopTracks extends Component {
             />
           </div>
         ) : (
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Track</th>
-                <th>Artist</th>
-                <th>Album</th>
-                <th>Preview</th>
-              </tr>
-            </thead>
-            <tbody>
-              {topTracks.map((topTrack, index) => (
-                <tr key={topTrack.id}>
-                  <td>{index + 1}</td>
-                  <td>{topTrack.name}</td>
-                  <td>
-                    {topTrack.artists.map((artist) => artist.name).join(", ")}
-                  </td>
-                  <td>{topTrack.album.name}</td>
-                  <td>
-                    <Button
-                      variant="link"
-                      onClick={() =>
-                        this.openSpotifyTrack(topTrack.external_urls.spotify)
-                      }
-                    >
-                      <FontAwesomeIcon icon={faSpotify} />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          <Tabs defaultActiveKey="topTracks4Months" id="topTracksTabs">
+            <Tab eventKey="topTracks4Months" title="4 Months">
+              {this.renderTopTracksTable(topTracks4Months)}
+            </Tab>
+            <Tab eventKey="topTracks6Months" title="6 Months">
+              {this.renderTopTracksTable(topTracks6Months)}
+            </Tab>
+            <Tab eventKey="topTracks12Months" title="12 Months">
+              {this.renderTopTracksTable(topTracks12Months)}
+            </Tab>
+          </Tabs>
         )}
       </Container>
     );
