@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Button, Table, Container } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 
 const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
 const REDIRECT_URI = "http://localhost:3000";
@@ -47,6 +49,10 @@ export default class TopTracks extends Component {
       });
   };
 
+  openSpotifyTrack = (url) => {
+    window.open(url, "_blank");
+  };
+
   render() {
     const { tracks, isLoggedIn } = this.state;
 
@@ -70,7 +76,7 @@ export default class TopTracks extends Component {
               <th colSpan={2}>Track Name</th>
               <th>Artists</th>
               <th>Album</th>
-              <th>Played At</th>
+              <th colSpan={2}>Played At</th>
             </tr>
           </thead>
           <tbody>
@@ -84,7 +90,18 @@ export default class TopTracks extends Component {
                     .join(", ")}
                 </td>
                 <td>{trackObj.track.album.name}</td>
-                <td>{new Date(trackObj.played_at).toLocaleString()}</td>
+                <td>{new Date(trackObj.played_at).toLocaleString()} </td>
+                <td>
+                  <FontAwesomeIcon
+                    icon={faSpotify}
+                    style={{ cursor: "pointer", fontSize: "1.25rem" }}
+                    onClick={() =>
+                      this.openSpotifyTrack(
+                        trackObj.context.external_urls.spotify
+                      )
+                    }
+                  />
+                </td>
               </tr>
             ))}
           </tbody>

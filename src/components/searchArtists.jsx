@@ -152,11 +152,7 @@ function SearchArtists() {
                 )}
                 {error && <Alert variant="danger">{error}</Alert>}
                 {albums.map((album) => (
-                  <Card
-                    key={album.id}
-                    className="border-0"
-                    onClick={() => openSpotify(album.external_urls.spotify)}
-                  >
+                  <Card key={album.id} className="border-0">
                     <Card.Img src={album.images[0].url} alt={album.name} />
                     <Card.Body>
                       <Card.Title style={{ fontSize: "1rem" }}>
@@ -165,6 +161,7 @@ function SearchArtists() {
                       <FontAwesomeIcon
                         icon={faSpotify}
                         style={{ cursor: "pointer", fontSize: "1.50rem" }}
+                        onClick={() => openSpotify(album.external_urls.spotify)}
                       />
                     </Card.Body>
                   </Card>
