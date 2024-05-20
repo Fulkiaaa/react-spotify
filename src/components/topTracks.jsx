@@ -118,15 +118,15 @@ export default class TopTracks extends Component {
   renderTopTracksTable = (tracks) => {
     return (
       <Table className="my-4" striped bordered hover>
-        {/* <thead>
+        <thead>
           <tr>
             <th>#</th>
             <th>Track Name</th>
             <th>Artists</th>
             <th colSpan={2}>Album</th>
-            <th>Preview</th>
+            <th>Go To Spotify</th>
           </tr>
-        </thead> */}
+        </thead>
         <tbody>
           {tracks.map((trackObj, index) => (
             <tr key={index}>

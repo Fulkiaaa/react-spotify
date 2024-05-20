@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Button, Tab, Tabs, Container, Table } from "react-bootstrap";
+import {
+  Button,
+  Tab,
+  Tabs,
+  Container,
+  Row,
+  Col,
+  Card,
+  Alert,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import { ThreeDots } from "react-loader-spinner";
@@ -92,42 +101,36 @@ export default class TopArtists extends Component {
       });
   };
 
-  openSpotifyTrack = (url) => {
+  openSpotifyArtist = (url) => {
     window.open(url, "_blank");
   };
 
-  renderTopArtistsTable = (artists) => {
+  renderTopArtistsCards = (artists) => {
     return (
-      <Table className="my-4" striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Artist Name</th>
-            <th>Popularity</th>
-            <th>Genres</th>
-            <th>Spotify</th>
-          </tr>
-        </thead>
-        <tbody>
-          {artists.map((artist, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{artist.name}</td>
-              <td>{artist.popularity}</td>
-              <td>{artist.genres.join(", ")}</td>
-              <td>
+      <Row className="my-4">
+        {artists.map((artist, index) => (
+          <Col key={index} sm={12} md={6} lg={3} className="mb-4">
+            <Card className="mb-2 mx-auto">
+              <Card.Img
+                variant="top"
+                src={artist.images[0]?.url}
+                alt={artist.name}
+              />
+              <Card.Body>
+                <Card.Title>{artist.name}</Card.Title>
+                <Card.Text>Popularity: {artist.popularity}</Card.Text>
                 <FontAwesomeIcon
                   icon={faSpotify}
-                  style={{ cursor: "pointer", fontSize: "1.25rem" }}
+                  style={{ cursor: "pointer", fontSize: "1.50rem" }}
                   onClick={() =>
-                    this.openSpotifyTrack(artist.external_urls.spotify)
+                    this.openSpotifyArtist(artist.external_urls.spotify)
                   }
                 />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
     );
   };
 
@@ -178,13 +181,13 @@ export default class TopArtists extends Component {
         ) : (
           <Tabs defaultActiveKey="topArtists4Months" id="topArtistsTabs">
             <Tab eventKey="topArtists4Months" title="4 Months">
-              {this.renderTopArtistsTable(topArtists4Months)}
+              {this.renderTopArtistsCards(topArtists4Months)}
             </Tab>
             <Tab eventKey="topArtists6Months" title="6 Months">
-              {this.renderTopArtistsTable(topArtists6Months)}
+              {this.renderTopArtistsCards(topArtists6Months)}
             </Tab>
             <Tab eventKey="topArtists12Months" title="12 Months">
-              {this.renderTopArtistsTable(topArtists12Months)}
+              {this.renderTopArtistsCards(topArtists12Months)}
             </Tab>
           </Tabs>
         )}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Button, Tab, Tabs, Container, Table } from "react-bootstrap";
+import { Button, Tab, Tabs, Container, ProgressBar } from "react-bootstrap";
 import { ThreeDots } from "react-loader-spinner";
 
 const CLIENT_ID = "7c26d439ea214815bc4a613af0331b1c";
@@ -66,7 +66,7 @@ export default class TopGenres extends Component {
         },
         params: {
           time_range: timeRange,
-          limit: 50,
+          limit: 20,
         },
       })
       .then((response) => {
@@ -99,27 +99,20 @@ export default class TopGenres extends Component {
       });
   };
 
-  renderTopGenresTable = (genres) => {
-    return (
-      <Table className="my-4" striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Genre</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          {genres.map((genreObj, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{genreObj.genre}</td>
-              <td>{genreObj.count}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+  renderTopGenresProgressBar = (genres) => {
+    const totalGenresCount = genres.reduce(
+      (acc, genreObj) => acc + genreObj.count,
+      0
     );
+    return genres.map((genreObj, index) => {
+      const percentage = ((genreObj.count / totalGenresCount) * 700).toFixed(2);
+      return (
+        <div key={index} className="my-2">
+          <h5 style={{ textTransform: "uppercase" }}>{genreObj.genre}</h5>
+          <ProgressBar style={{ height: "40px" }} now={percentage} />
+        </div>
+      );
+    });
   };
 
   render() {
@@ -169,13 +162,13 @@ export default class TopGenres extends Component {
         ) : (
           <Tabs defaultActiveKey="topGenres4Months" id="topGenresTabs">
             <Tab eventKey="topGenres4Months" title="4 Months">
-              {this.renderTopGenresTable(topGenres4Months)}
+              {this.renderTopGenresProgressBar(topGenres4Months)}
             </Tab>
             <Tab eventKey="topGenres6Months" title="6 Months">
-              {this.renderTopGenresTable(topGenres6Months)}
+              {this.renderTopGenresProgressBar(topGenres6Months)}
             </Tab>
             <Tab eventKey="topGenres12Months" title="12 Months">
-              {this.renderTopGenresTable(topGenres12Months)}
+              {this.renderTopGenresProgressBar(topGenres12Months)}
             </Tab>
           </Tabs>
         )}
