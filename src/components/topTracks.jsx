@@ -118,15 +118,15 @@ export default class TopTracks extends Component {
   renderTopTracksTable = (tracks) => {
     return (
       <Table className="my-4" striped bordered hover>
-        <thead>
+        {/* <thead>
           <tr>
             <th>#</th>
             <th>Track Name</th>
             <th>Artists</th>
-            <th>Album</th>
+            <th colSpan={2}>Album</th>
             <th>Preview</th>
           </tr>
-        </thead>
+        </thead> */}
         <tbody>
           {tracks.map((trackObj, index) => (
             <tr key={index}>
@@ -136,6 +136,13 @@ export default class TopTracks extends Component {
                 {trackObj.artists.map((artist) => artist.name).join(", ")}
               </td>
               <td>{trackObj.album.name}</td>
+              <td>
+                <img
+                  src={trackObj.album.images[2].url}
+                  style={{ height: "46px" }}
+                  alt="Album Art"
+                />
+              </td>
               <td>
                 <FontAwesomeIcon
                   icon={faSpotify}

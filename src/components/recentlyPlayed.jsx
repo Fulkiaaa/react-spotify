@@ -131,7 +131,7 @@ export default class RecentlyPlayedTracks extends Component {
                 <th>#</th>
                 <th>Track Name</th>
                 <th>Artists</th>
-                <th>Album</th>
+                <th colSpan={2}>Album</th>
                 <th>Played At</th>
                 <th>Preview</th>
               </tr>
@@ -141,12 +141,20 @@ export default class RecentlyPlayedTracks extends Component {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{trackObj.track.name}</td>
+
                   <td>
                     {trackObj.track.artists
                       .map((artist) => artist.name)
                       .join(", ")}
                   </td>
                   <td>{trackObj.track.album.name}</td>
+                  <td>
+                    <img
+                      src={trackObj.track.album.images[2].url}
+                      style={{ height: "46px" }}
+                      alt="Album Art"
+                    />
+                  </td>
                   <td>{new Date(trackObj.played_at).toLocaleString()}</td>
                   <td>
                     <FontAwesomeIcon
