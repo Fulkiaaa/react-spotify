@@ -79,7 +79,7 @@ export default class Home extends Component {
       <div style={styles.container}>
         {isLoggedIn ? (
           <>
-            <h1 style={styles.title}>Bienvenue sur vos statistiques Spotify, {user.name}!</h1>
+            <h1 style={styles.title}>Bienvenue sur vos statistiques Spotify {user.name}!</h1>
             {/* <div style={styles.section}>
               <h2>Statistiques globales</h2>
               <p>Nombre total de chansons écoutées : {user.totalSongs}</p>
@@ -87,7 +87,7 @@ export default class Home extends Component {
           </>
         ) : (
           <div style={styles.section}>
-            <h1 style={styles.title}>Bienvenue sur Spotify Stats</h1>
+            <h1 style={styles.title}>Bienvenue sur Spotify Statssssss</h1>
             <p>Veuillez vous connecter pour voir vos statistiques Spotify.</p>
             <a href={AUTH_URL} style={styles.button}>
               Se connecter à Spotify
