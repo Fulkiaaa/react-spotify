@@ -68,6 +68,9 @@ export default class Header extends Component {
               <Nav.Link className="text-white" href="/search-artists">
                 Search Albums Of An Artist
               </Nav.Link>
+              <Nav.Link className="text-white" href="/likes">
+                Like?
+              </Nav.Link>
             </Nav>
             <Nav className="navbar-right">
               {this.state.token ? (
@@ -97,7 +100,7 @@ export default class Header extends Component {
                   style={{ backgroundColor: "#34B954", borderColor: "#34B954" }}
                   href={AUTH_URL}
                 >
-                  Login to Spotify
+                  Se connecter à Spotify
                 </Button>
               )}
             </Nav>

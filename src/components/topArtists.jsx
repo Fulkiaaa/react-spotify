@@ -146,13 +146,13 @@ export default class TopArtists extends Component {
     if (!isLoggedIn) {
       return (
         <Container className="my-4">
-          <h2>Please log in to view your top artists</h2>
+          <h2>Veuillez vous connecter pour voir vos top artistes.</h2>
           <Button
             className="m-3"
             style={{ backgroundColor: "#34B954", borderColor: "#34B954" }}
             href={AUTH_URL}
           >
-            Login to Spotify
+            Se connecter à Spotify
           </Button>
         </Container>
       );

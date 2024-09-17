@@ -11,6 +11,7 @@ import TopArtists from "./components/topArtists";
 import TopGenre from "./components/topGenres";
 import RecentlyPlayed from "./components/recentlyPlayed";
 import SearchArtists from "./components/searchArtists";
+import LikesTinder from "./components/LikesTinder";
 import Error from "./components/error";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/top-genres" element={<TopGenre />} />
             <Route path="/recently-played" element={<RecentlyPlayed />} />
             <Route path="/search-artists" element={<SearchArtists />} />
+            <Route path="/likes" element={<LikesTinder />} />
             <Route path="/*" element={<Error />} />
           </Routes>
         </Routeur>
