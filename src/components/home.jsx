@@ -92,6 +92,9 @@ export default class Home extends Component {
             <a href={AUTH_URL} style={styles.button}>
               Se connecter à Spotify
             </a>
+            <h1 className="text-3xl font-bold underline">
+              Hello world!
+            </h1>
           </div>
         )}
       </div>
